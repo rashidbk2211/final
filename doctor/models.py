@@ -15,3 +15,13 @@ class Doctor(models.Model):
     def get_full_name(self):
         return f"Dr. {self.user.get_full_name()}"
 
+class Prescription(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    patient = models.ForeignKey('patient.Patient', on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    medications = models.TextField()
+    instructions = models.TextField()
+
+    def __str__(self):
+        return f"Prescription for {self.patient} by {self.doctor} on {self.date}"
+

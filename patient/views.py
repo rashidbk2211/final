@@ -71,9 +71,9 @@ def initiate_payment(request, appointment_id):
 @login_required
 def payment_success(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user.patient)
-    appointment.status = 'CONFIRMED'
     appointment.payment_status = 'PAID'
     appointment.save()
+    messages.success(request, 'Payment successful. Your appointment is pending administrator confirmation.')
     return render(request, 'patient/payment_success.html', {'appointment': appointment})
 
 

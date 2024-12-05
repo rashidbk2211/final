@@ -31,3 +31,8 @@ class Appointment(models.Model):
     def __str__(self):
         return f"{self.patient} - {self.doctor} - {self.date_time}"
 
+    def save(self, *args, **kwargs):
+        if self.payment_status == 'PAID' and self.status == 'PENDING':
+            self.status = 'PENDING'  # Keep it pending even if paid, waiting for admin confirmation
+        super().save(*args, **kwargs)
+

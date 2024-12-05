@@ -28,5 +28,31 @@
         {% endfor %}
     </tbody>
 </table>
+
+<h2 class="mt-4">Prescriptions</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Medications</th>
+            <th>Instructions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prescription in prescriptions %}
+        <tr>
+            <td>{{ prescription.date }}</td>
+            <td>{{ prescription.medications }}</td>
+            <td>{{ prescription.instructions }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No prescriptions found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'add_prescription' patient.id %}" class="btn btn-primary">Add Prescription</a>
+
 {% endblock %}
 

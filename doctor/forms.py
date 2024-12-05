@@ -6,7 +6,7 @@ class PrescriptionForm(forms.ModelForm):
         model = Prescription
         fields = ['medications', 'instructions']
         widgets = {
-            'medications': forms.Textarea(attrs={'rows': 3}),
-            'instructions': forms.Textarea(attrs={'rows': 3}),
+            'medications': forms.Textarea(attrs={'rows': 4}),
+            'instructions': forms.Textarea(attrs={'rows': 4}),
         }
 
