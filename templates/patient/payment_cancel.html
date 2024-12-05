@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Payment Cancelled</h1>
+    <p>Your payment has been cancelled and the appointment has been removed. If you'd like to try again, please return to the appointment booking page.</p>
+    <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book Appointment</a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to E-Hospitality{% endblock %}
+
+{% block content %}
+<div class="hero text-center">
+    <h1>Welcome to E-Hospitality</h1>
+    <p class="lead">Your comprehensive healthcare management solution</p>
+    <a href="{% url 'patient_registration' %}" class="btn btn-primary btn-lg">Get Started</a>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Our Services</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i data-lucide="calendar" class="feature-icon text-primary"></i>
+                    <h5 class="card-title">Easy Appointment Booking</h5>
+                    <p class="card-text">Book appointments with your preferred doctors at your convenience.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i data-lucide="file-text" class="feature-icon text-primary"></i>
+                    <h5 class="card-title">Digital Health Records</h5>
+                    <p class="card-text">Access your medical records anytime, anywhere securely.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i data-lucide="message-circle" class="feature-icon text-primary"></i>
+                    <h5 class="card-title">Telemedicine Consultations</h5>
+                    <p class="card-text">Connect with healthcare professionals from the comfort of your home.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2>Why Choose E-Hospitality?</h2>
+            <ul class="list-unstyled">
+                <li><i data-lucide="check-circle" class="text-success me-2"></i> 24/7 Access to Healthcare Services</li>
+                <li><i data-lucide="check-circle" class="text-success me-2"></i> User-Friendly Interface</li>
+                <li><i data-lucide="check-circle" class="text-success me-2"></i> Secure and Confidential</li>
+                <li><i data-lucide="check-circle" class="text-success me-2"></i> Integrated Payment System</li>
+            </ul>
+            <a href="{% url 'patient_registration' %}" class="btn btn-primary mt-3">Join Now</a>
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'images/doctor-patient.jpg' %}" alt="Doctor and Patient" class="img-fluid rounded">
+        </div>
+    </div>
+</div>
+{% endblock %}
+

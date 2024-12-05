@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+    #card-element {
+        margin-bottom: 24px;
+    }
+    .payment-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .payment-modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Confirm Appointment</h1>
+    <p>Doctor: {{ appointment.doctor }}</p>
+    <p>Date & Time: {{ appointment.date_time }}</p>
+    <p>Reason: {{ appointment.reason }}</p>
+    <button id="pay-button" class="btn btn-primary">Proceed to Payment</button>
+</div>
+
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-modal-content">
+        <h2>Payment</h2>
+        <form id="payment-form">
+            <div id="card-element"></div>
+            <div id="card-errors" role="alert"></div>
+            <button id="submit-button" class="btn btn-primary">Pay RS 100.00</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    
+    var payButton = document.getElementById('pay-button');
+    var modal = document.getElementById('payment-modal');
+    var form = document.getElementById('payment-form');
+    var submitButton = document.getElementById('submit-button');
+
+    payButton.addEventListener('click', function() {
+        modal.style.display = 'block';
+        card.mount('#card-element');
+    });
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+            card.unmount();
+        }
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        submitButton.disabled = true;
+
+        fetch('{% url "initiate_payment" appointment.id %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(function(response) {
+            return response.json();
+        }).then(function(result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error;
+                submitButton.disabled = false;
+            } else {
+                stripe.confirmCardPayment(result.clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: '{{ request.user.get_full_name }}'
+                        }
+                    }
+                }).then(function(result) {
+                    if (result.error) {
+                        var errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = result.error.message;
+                        submitButton.disabled = false;
+                    } else {
+                        window.location.href = '{% url "payment_success" appointment.id %}';
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+
